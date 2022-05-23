@@ -77,7 +77,7 @@ RUN echo "auth requisite pam_deny.so" >> /etc/pam.d/su && \
     sed -i.bak -e 's/^%sudo/#%sudo/' /etc/sudoers && \
     useradd -l -m -s /bin/bash -N -u "${NB_UID}" "${NB_USER}" && \
     mkdir -p "${CONDA_DIR}" && \
-    chown "${NB_USER}:${NB_GID}" "${CONDA_DIR}" && \
+    chown -R "${NB_USER}:${NB_GID}" "${CONDA_DIR}" && \
     chmod g+w /etc/passwd && \
     fix-permissions "${HOME}" && \
     fix-permissions "${CONDA_DIR}"
@@ -85,7 +85,7 @@ RUN echo "auth requisite pam_deny.so" >> /etc/pam.d/su && \
 USER ${NB_UID}
 
 # Pin python version here, or set it to "default"
-ARG PYTHON_VERSION=3.9
+ARG PYTHON_VERSION=3.10
 
 # Setup work directory for backward-compatibility
 RUN mkdir "/home/${NB_USER}/work" && \
@@ -105,34 +105,12 @@ RUN mkdir "/home/${NB_USER}/work" && \
 COPY --chown="${NB_UID}:${NB_GID}" initial-condarc "${CONDA_DIR}/.condarc"
 WORKDIR /tmp
 RUN set -x && \
-    arch=$(uname -m) && \
-    if [ "${arch}" = "x86_64" ]; then \
-        # Should be simpler, see <https://github.com/mamba-org/mamba/issues/1437>
-        arch="64"; \
-    fi && \
-    wget -qO /tmp/micromamba.tar.bz2 \
-        "https://micromamba.snakepit.net/api/micromamba/linux-${arch}/latest" && \
-    tar -xvjf /tmp/micromamba.tar.bz2 --strip-components=1 bin/micromamba && \
-    rm /tmp/micromamba.tar.bz2 && \
-    PYTHON_SPECIFIER="python=${PYTHON_VERSION}" && \
-    if [[ "${PYTHON_VERSION}" == "default" ]]; then PYTHON_SPECIFIER="python"; fi && \
-    if [ "${arch}" == "aarch64" ]; then \
-        # Prevent libmamba from sporadically hanging on arm64 under QEMU
-        # <https://github.com/mamba-org/mamba/issues/1611>
-        # We don't use `micromamba config set` since it instead modifies ~/.condarc.
-        echo "extract_threads: 1" >> "${CONDA_DIR}/.condarc"; \
-    fi && \
     # Install the packages
-    ./micromamba install \
-        --root-prefix="${CONDA_DIR}" \
-        --prefix="${CONDA_DIR}" \
+    mamba install \
         --yes \
-        "${PYTHON_SPECIFIER}" \
-        'mamba' \
         'notebook' \
         'jupyterhub' \
         'jupyterlab' && \
-    rm micromamba && \
     # Pin major.minor version of python
     mamba list python | grep '^python ' | tr -s ' ' | cut -d ' ' -f 1,2 >> "${CONDA_DIR}/conda-meta/pinned" && \
     jupyter notebook --generate-config && \
