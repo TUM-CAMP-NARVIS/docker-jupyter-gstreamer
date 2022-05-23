@@ -2,7 +2,7 @@
 # Distributed under the terms of the Modified BSD License.
 
 # https://hub.docker.com/r/jupyter/base-notebook/tags
-ARG OWNER=jupyter
+ARG OWNER=camp
 ARG BASE_CONTAINER=$OWNER/base-notebook:6b49f3337709
 FROM $BASE_CONTAINER
 
