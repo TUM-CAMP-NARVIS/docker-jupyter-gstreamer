@@ -57,7 +57,9 @@ RUN python3 -m pip --no-cache-dir install \
     'statsmodels' \
     'sympy' \
     'widgetsnbextension'\
-    'xlrd'
+    'xlrd' \
+    'bagpy' \
+    'pycapnp'
 
 USER ${NB_UID}
 RUN fix-permissions "/home/${NB_USER}"
