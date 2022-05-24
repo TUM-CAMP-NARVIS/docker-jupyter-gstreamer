@@ -19,14 +19,21 @@ RUN apt-get update --yes && \
     # for latex labels
     cm-super \
     dvipng \
+    python3-opencv \
+    python3-tables \
+    python3-skimage \
+    python3-skimage-lib \
+    python3-sklearn \
+    python3-sklearn-lib \
+    python3-scipy \
     # for matplotlib anim
     ffmpeg && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-USER ${NB_UID}
 
 # Install Python 3 packages
-RUN python3 -m pip install \
+USER root
+RUN python3 -m pip --no-cache-dir install \
     'altair' \
     'beautifulsoup4' \
     'bokeh' \
@@ -38,25 +45,24 @@ RUN python3 -m pip install \
     'h5py' \
     'ipympl'\
     'ipywidgets' \
-    'matplotlib-base' \
+    'matplotlib' \
     'numba' \
     'numexpr' \
     'pandas' \
     'patsy' \
     'protobuf' \
-    'pytables' \
-    'scikit-image' \
-    'scikit-learn' \
-    'scipy' \
     'seaborn' \
     'sqlalchemy' \
     'statsmodels' \
     'sympy' \
     'widgetsnbextension'\
-    'xlrd' && \
-    fix-permissions "/home/${NB_USER}"
+    'xlrd'
+
+USER ${NB_UID}
+RUN fix-permissions "/home/${NB_USER}"
 
 # Install facets which does not have a pip or conda package at the moment
+USER root
 WORKDIR /tmp
 RUN git clone https://github.com/PAIR-code/facets.git && \
     jupyter nbextension install facets/facets-dist/ --sys-prefix && \
@@ -66,7 +72,7 @@ RUN git clone https://github.com/PAIR-code/facets.git && \
 # Import matplotlib the first time to build the font cache.
 ENV XDG_CACHE_HOME="/home/${NB_USER}/.cache/"
 
-RUN MPLBACKEND=Agg python -c "import matplotlib.pyplot" && \
+RUN MPLBACKEND=Agg python3 -c "import matplotlib.pyplot" && \
     fix-permissions "/home/${NB_USER}"
 
 USER ${NB_UID}

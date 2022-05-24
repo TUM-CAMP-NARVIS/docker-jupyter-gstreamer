@@ -43,6 +43,8 @@ RUN apt-get update --yes && \
     #   processes and such of the actual executable we want to start, see
     #   https://github.com/krallin/tini#why-tini for details.
     tini \
+    nodejs \
+    npm \
     wget && \
     apt-get clean && rm -rf /var/lib/apt/lists/* && \
     echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
@@ -78,18 +80,22 @@ RUN echo "auth requisite pam_deny.so" >> /etc/pam.d/su && \
     fix-permissions "${HOME}"
 
 USER ${NB_UID}
-
 # Setup work directory for backward-compatibility
 RUN mkdir "/home/${NB_USER}/work" && \
     fix-permissions "/home/${NB_USER}"
 
+USER root
 RUN set -x && \
-    python3 -m pip install notebook jupyterhub jupyterlab && \
+    python3 -m pip --no-cache-dir install notebook jupyterhub jupyterlab && \
     jupyter notebook --generate-config && \
     npm cache clean --force && \
     jupyter lab clean && \
     rm -rf "/home/${NB_USER}/.cache/yarn" && \
-    fix-permissions "/home/${NB_USER}"
+    chown -R ${NB_UID}:${NB_GID} "/home/${NB_USER}"
+
+
+USER ${NB_UID}
+RUN fix-permissions "/home/${NB_USER}"
 
 EXPOSE 8888
 
