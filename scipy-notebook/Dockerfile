@@ -26,6 +26,7 @@ RUN apt-get update --yes && \
     python3-sklearn \
     python3-sklearn-lib \
     python3-scipy \
+    python3-pymediainfo \
     # for matplotlib anim
     ffmpeg && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
