@@ -26,19 +26,12 @@ RUN apt-get update --yes && \
 USER ${NB_UID}
 
 # Install Python 3 packages
-RUN arch=$(uname -m) && \
-    if [ "${arch}" == "aarch64" ]; then \
-        # Prevent libmamba from sporadically hanging on arm64 under QEMU
-        # <https://github.com/mamba-org/mamba/issues/1611>
-        export G_SLICE=always-malloc; \
-    fi && \
-    mamba install --quiet --yes \
+RUN python3 -m pip install \
     'altair' \
     'beautifulsoup4' \
     'bokeh' \
     'bottleneck' \
     'cloudpickle' \
-    'conda-forge::blas=*=openblas' \
     'cython' \
     'dask' \
     'dill' \
@@ -61,8 +54,6 @@ RUN arch=$(uname -m) && \
     'sympy' \
     'widgetsnbextension'\
     'xlrd' && \
-    mamba clean --all -f -y && \
-    fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
 # Install facets which does not have a pip or conda package at the moment
@@ -70,7 +61,6 @@ WORKDIR /tmp
 RUN git clone https://github.com/PAIR-code/facets.git && \
     jupyter nbextension install facets/facets-dist/ --sys-prefix && \
     rm -rf /tmp/facets && \
-    fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
 # Import matplotlib the first time to build the font cache.
