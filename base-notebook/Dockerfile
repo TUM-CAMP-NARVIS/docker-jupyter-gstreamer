@@ -58,7 +58,7 @@ ENV CONDA_DIR=/opt/conda \
     LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8
 ENV PATH="${CONDA_DIR}/bin:${PATH}" \
-    HOME="/home/${NB_USER}"
+    HOME="/home/${NB_USER}" \
     PYTHONPATH="/usr/lib/python3/dist-packages"
 
 # Copy a script that we will use to correct permissions after running certain commands
