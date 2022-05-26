@@ -27,6 +27,9 @@ RUN apt-get update --yes && \
     python3-sklearn-lib \
     python3-scipy \
     python3-pymediainfo \
+    cython3 \
+    cmake \
+    mkvtoolnix \
     # for matplotlib anim
     ffmpeg && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -59,7 +62,23 @@ RUN python3 -m pip --no-cache-dir install \
     'widgetsnbextension'\
     'xlrd' \
     'bagpy' \
-    'pycapnp'
+    'pyarrow'
+
+WORKDIR /tmp
+RUN git clone https://github.com/capnproto/pycapnp.git && \
+    cd pycapnp && \
+    python3 -m pip --no-cache-dir install --install-option "--libcapnp-url" \
+    --install-option "https://github.com/capnproto/capnproto/archive/refs/tags/v0.9.1.tar.gz" \
+    --install-option "--force-bundled-libcapnp" .
+
+
+RUN git clone https://github.com/shersonb/python-ebml.git && \
+    cd python-ebml && \
+    python3 -m pip --no-cache-dir install .
+
+RUN git clone https://github.com/shersonb/python-matroska.git && \
+    cd python-matroska && \
+    python3 -m pip --no-cache-dir install .
 
 USER ${NB_UID}
 RUN fix-permissions "/home/${NB_USER}"
@@ -71,9 +90,6 @@ RUN git clone https://github.com/PAIR-code/facets.git && \
     jupyter nbextension install facets/facets-dist/ --sys-prefix && \
     rm -rf /tmp/facets && \
     fix-permissions "/home/${NB_USER}"
-
-RUN python3 -m pip --no-cache-dir install ipywebrtc && \
-    jupyter labextension install jupyter-webrtc
 
 # Import matplotlib the first time to build the font cache.
 ENV XDG_CACHE_HOME="/home/${NB_USER}/.cache/"
