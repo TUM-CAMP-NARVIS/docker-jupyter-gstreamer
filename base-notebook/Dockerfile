@@ -76,6 +76,8 @@ RUN echo "auth requisite pam_deny.so" >> /etc/pam.d/su && \
     sed -i.bak -e 's/^%admin/#%admin/' /etc/sudoers && \
     sed -i.bak -e 's/^%sudo/#%sudo/' /etc/sudoers && \
     useradd -l -m -s /bin/bash -N -u "${NB_UID}" "${NB_USER}" && \
+    groupadd -g 1004 vglusers && \
+    adduser "${NB_USER}" vglusers && \
     chmod g+w /etc/passwd && \
     fix-permissions "${HOME}"
 

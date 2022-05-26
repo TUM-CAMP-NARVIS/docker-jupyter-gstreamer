@@ -72,6 +72,9 @@ RUN git clone https://github.com/PAIR-code/facets.git && \
     rm -rf /tmp/facets && \
     fix-permissions "/home/${NB_USER}"
 
+RUN python3 -m pip --no-cache-dir install ipywebrtc && \
+    jupyter labextension install jupyter-webrtc
+
 # Import matplotlib the first time to build the font cache.
 ENV XDG_CACHE_HOME="/home/${NB_USER}/.cache/"
 
