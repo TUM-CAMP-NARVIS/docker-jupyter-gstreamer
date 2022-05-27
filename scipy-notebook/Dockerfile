@@ -63,7 +63,8 @@ RUN python3 -m pip --no-cache-dir install \
     'pyarrow' \
     'srt' \
     'timecode' \
-    'ffmpeg-python'
+    'ffmpeg-python' \
+    'prefect'
 
 WORKDIR /tmp
 RUN git clone https://github.com/capnproto/pycapnp.git && \
