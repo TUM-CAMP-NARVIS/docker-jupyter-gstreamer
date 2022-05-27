@@ -29,9 +29,7 @@ RUN apt-get update --yes && \
     python3-pymediainfo \
     cython3 \
     cmake \
-    mkvtoolnix \
-    # for matplotlib anim
-    ffmpeg && \
+    mkvtoolnix &&\
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 
@@ -62,7 +60,10 @@ RUN python3 -m pip --no-cache-dir install \
     'widgetsnbextension'\
     'xlrd' \
     'bagpy' \
-    'pyarrow'
+    'pyarrow' \
+    'srt' \
+    'timecode' \
+    'ffmpeg-python'
 
 WORKDIR /tmp
 RUN git clone https://github.com/capnproto/pycapnp.git && \
@@ -79,6 +80,8 @@ RUN git clone https://github.com/shersonb/python-ebml.git && \
 RUN git clone https://github.com/shersonb/python-matroska.git && \
     cd python-matroska && \
     python3 -m pip --no-cache-dir install .
+
+RUN chown -R ${NB_UID}:${NB_GID} /home/${NB_USER}
 
 USER ${NB_UID}
 RUN fix-permissions "/home/${NB_USER}"
