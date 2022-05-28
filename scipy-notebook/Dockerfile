@@ -67,7 +67,10 @@ RUN python3 -m pip --no-cache-dir install \
     'timecode' \
     'ffmpeg-python' \
     'prefect[viz]' \
-    'dask-labextension'
+    'dask-labextension' \
+    'jupyterlab_hdf' \
+    'hdf5plugin' \
+    'qgrid'
 
 WORKDIR /tmp
 RUN git clone https://github.com/capnproto/pycapnp.git && \
@@ -95,6 +98,8 @@ USER root
 WORKDIR /tmp
 RUN git clone https://github.com/PAIR-code/facets.git && \
     jupyter nbextension install facets/facets-dist/ --sys-prefix && \
+    jupyter labextension install @jupyterlab/hdf5 && \
+    jupyter nbextension enable --py --sys-prefix qgrid
     rm -rf /tmp/facets && \
     fix-permissions "/home/${NB_USER}"
 
