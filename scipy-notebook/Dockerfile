@@ -66,7 +66,8 @@ RUN python3 -m pip --no-cache-dir install \
     'srt' \
     'timecode' \
     'ffmpeg-python' \
-    'prefect[viz]'
+    'prefect[viz]' \
+    'dask-labextension'
 
 WORKDIR /tmp
 RUN git clone https://github.com/capnproto/pycapnp.git && \
