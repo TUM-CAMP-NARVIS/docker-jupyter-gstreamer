@@ -29,6 +29,8 @@ RUN apt-get update --yes && \
     python3-pymediainfo \
     cython3 \
     cmake \
+    graphviz \
+    ffmpeg \
     mkvtoolnix &&\
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
@@ -64,7 +66,7 @@ RUN python3 -m pip --no-cache-dir install \
     'srt' \
     'timecode' \
     'ffmpeg-python' \
-    'prefect'
+    'prefect[viz]'
 
 WORKDIR /tmp
 RUN git clone https://github.com/capnproto/pycapnp.git && \
