@@ -69,8 +69,7 @@ RUN python3 -m pip --no-cache-dir install \
     'prefect[viz]' \
     'dask-labextension' \
     'jupyterlab_hdf' \
-    'hdf5plugin' \
-    'qgrid'
+    'hdf5plugin' 
 
 WORKDIR /tmp
 RUN git clone https://github.com/capnproto/pycapnp.git && \
@@ -88,6 +87,11 @@ RUN git clone https://github.com/shersonb/python-matroska.git && \
     cd python-matroska && \
     python3 -m pip --no-cache-dir install .
 
+RUN git clone https://github.com/JohnOmernik/qgrid.git && \
+    cd qgrid && \
+    python3 -m pip --no-cache-dir install . && \
+    jupyter labextension install qgrid2 
+
 RUN chown -R ${NB_UID}:${NB_GID} /home/${NB_USER}
 
 USER ${NB_UID}
@@ -99,7 +103,6 @@ WORKDIR /tmp
 RUN git clone https://github.com/PAIR-code/facets.git && \
     jupyter nbextension install facets/facets-dist/ --sys-prefix && \
     jupyter labextension install @jupyterlab/hdf5 && \
-    jupyter nbextension enable --py --sys-prefix qgrid && \
     rm -rf /tmp/facets && \
     fix-permissions "/home/${NB_USER}"
 
