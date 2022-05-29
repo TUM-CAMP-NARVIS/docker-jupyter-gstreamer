@@ -77,7 +77,11 @@ RUN echo "auth requisite pam_deny.so" >> /etc/pam.d/su && \
     sed -i.bak -e 's/^%sudo/#%sudo/' /etc/sudoers && \
     useradd -l -m -s /bin/bash -N -u "${NB_UID}" "${NB_USER}" && \
     groupadd -g 1004 vglusers && \
+    groupadd -g 29681 i16 && \
+    groupadd -g 18921 i16atlas && \
     adduser "${NB_USER}" vglusers && \
+    adduser "${NB_USER}" i16 && \
+    adduser "${NB_USER}" i16atlas && \
     chmod g+w /etc/passwd && \
     fix-permissions "${HOME}"
 

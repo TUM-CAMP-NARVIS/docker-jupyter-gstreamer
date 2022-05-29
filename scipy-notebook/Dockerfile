@@ -99,7 +99,7 @@ WORKDIR /tmp
 RUN git clone https://github.com/PAIR-code/facets.git && \
     jupyter nbextension install facets/facets-dist/ --sys-prefix && \
     jupyter labextension install @jupyterlab/hdf5 && \
-    jupyter nbextension enable --py --sys-prefix qgrid
+    jupyter nbextension enable --py --sys-prefix qgrid && \
     rm -rf /tmp/facets && \
     fix-permissions "/home/${NB_USER}"
 
