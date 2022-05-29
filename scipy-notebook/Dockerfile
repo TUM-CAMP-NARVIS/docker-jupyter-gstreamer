@@ -87,11 +87,6 @@ RUN git clone https://github.com/shersonb/python-matroska.git && \
     cd python-matroska && \
     python3 -m pip --no-cache-dir install .
 
-RUN git clone https://github.com/JohnOmernik/qgrid.git && \
-    cd qgrid && \
-    python3 -m pip --no-cache-dir install . && \
-    jupyter labextension install qgrid 
-
 RUN chown -R ${NB_UID}:${NB_GID} /home/${NB_USER}
 
 USER ${NB_UID}
