@@ -69,7 +69,8 @@ RUN python3 -m pip --no-cache-dir install \
     'prefect[viz]' \
     'dask-labextension' \
     'jupyterlab_hdf' \
-    'hdf5plugin' 
+    'hdf5plugin' \
+    'jupyter_bokeh'
 
 WORKDIR /tmp
 RUN git clone https://github.com/capnproto/pycapnp.git && \
