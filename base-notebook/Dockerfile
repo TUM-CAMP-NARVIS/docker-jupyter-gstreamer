@@ -9,8 +9,8 @@ FROM $ROOT_CONTAINER
 
 LABEL maintainer="Jupyter Project <jupyter@googlegroups.com>"
 ARG NB_USER="jovyan"
-ARG NB_UID="1000"
-ARG NB_GID="100"
+ARG NB_UID="30595"
+ARG NB_GID="18921"
 
 # Fix: https://github.com/hadolint/hadolint/wiki/DL4006
 # Fix: https://github.com/koalaman/shellcheck/wiki/SC3014
@@ -77,11 +77,7 @@ RUN echo "auth requisite pam_deny.so" >> /etc/pam.d/su && \
     sed -i.bak -e 's/^%sudo/#%sudo/' /etc/sudoers && \
     useradd -l -m -s /bin/bash -N -u "${NB_UID}" "${NB_USER}" && \
     groupadd -g 1004 vglusers && \
-    groupadd -g 29681 i16 && \
-    groupadd -g 18921 i16atlas && \
     adduser "${NB_USER}" vglusers && \
-    adduser "${NB_USER}" i16 && \
-    adduser "${NB_USER}" i16atlas && \
     chmod g+w /etc/passwd && \
     fix-permissions "${HOME}"
 
