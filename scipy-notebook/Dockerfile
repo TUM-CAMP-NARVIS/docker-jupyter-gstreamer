@@ -88,7 +88,8 @@ RUN git clone https://github.com/shersonb/python-matroska.git && \
     cd python-matroska && \
     python3 -m pip --no-cache-dir install .
 
-RUN chown -R ${NB_UID}:${NB_GID} /home/${NB_USER}
+RUN chown -R ${NB_UID}:${NB_GID} /home/${NB_USER} && \
+    adduser "${NB_USER}" vglusers
 
 USER ${NB_UID}
 RUN fix-permissions "/home/${NB_USER}"
