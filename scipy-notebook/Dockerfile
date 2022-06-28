@@ -31,6 +31,10 @@ RUN apt-get update --yes && \
     cmake \
     graphviz \
     ffmpeg \
+    libopencv-dev \
+    libturbojpeg-dev \
+    htop \
+    rsync \
     mkvtoolnix &&\
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
