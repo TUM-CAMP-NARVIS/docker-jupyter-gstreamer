@@ -27,12 +27,20 @@ RUN apt-get update --yes && \
     python3-sklearn-lib \
     python3-scipy \
     python3-pymediainfo \
+    python3.10-venv \
     cython3 \
     cmake \
     graphviz \
     ffmpeg \
     libopencv-dev \
     libturbojpeg-dev \
+    libsparsehash-dev \
+    libboost-all-dev \
+    zlib1g-dev \
+    libsm6 \
+    libxext6 \
+    mesa-utils \
+    libgl1-mesa-glx \
     htop \
     rsync \
     mkvtoolnix &&\
@@ -101,11 +109,11 @@ RUN fix-permissions "/home/${NB_USER}"
 # Install facets which does not have a pip or conda package at the moment
 USER root
 WORKDIR /tmp
-RUN git clone https://github.com/PAIR-code/facets.git && \
-    jupyter nbextension install facets/facets-dist/ --sys-prefix && \
-    jupyter labextension install @jupyterlab/hdf5 && \
-    rm -rf /tmp/facets && \
-    fix-permissions "/home/${NB_USER}"
+#RUN python3 -m pip --no-cache-dir install jupyter_contrib_nbextensions && \
+#    git clone https://github.com/PAIR-code/facets.git && \
+#    jupyter nbextension install facets/facets-dist/ --sys-prefix && \
+#    rm -rf /tmp/facets && \
+#    fix-permissions "/home/${NB_USER}"
 
 # Import matplotlib the first time to build the font cache.
 ENV XDG_CACHE_HOME="/home/${NB_USER}/.cache/"
