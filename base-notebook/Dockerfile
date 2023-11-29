@@ -17,14 +17,15 @@ ARG NB_GID="1000"
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 USER root
-
+RUN echo "Building Containers..."
 # Install all OS dependencies for notebook server that starts but lacks all
 # features (e.g., download as all possible file formats)
 ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get remove --yes nvidia-firmware-535* libnvidia-gl-535*
 RUN apt-get update --yes && \
     # - apt-get upgrade is run to patch known vulnerabilities in apt-get packages as
     #   the ubuntu base image is rebuilt too seldom sometimes (less than once a month)
-    apt-get upgrade --yes && \
+    apt-get dist-upgrade --yes && \
     apt-get install --yes --no-install-recommends \
     # - bzip2 is necessary to extract the micromamba executable.
     bzip2 \

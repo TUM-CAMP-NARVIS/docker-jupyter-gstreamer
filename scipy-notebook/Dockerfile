@@ -82,14 +82,15 @@ RUN python3 -m pip --no-cache-dir install \
     'dask-labextension' \
     'jupyterlab_hdf' \
     'hdf5plugin' \
-    'jupyter_bokeh'
+    'jupyter_bokeh' \
+    'pycapnp'
 
 WORKDIR /tmp
-RUN git clone https://github.com/capnproto/pycapnp.git && \
-    cd pycapnp && \
-    python3 -m pip --no-cache-dir install --install-option "--libcapnp-url" \
-    --install-option "https://github.com/capnproto/capnproto/archive/refs/tags/v0.9.1.tar.gz" \
-    --install-option "--force-bundled-libcapnp" .
+#RUN git clone https://github.com/capnproto/pycapnp.git && \
+#    cd pycapnp && \
+#    python3 -m pip --no-cache-dir install --install-option "--libcapnp-url" \
+#    --install-option "https://github.com/capnproto/capnproto/archive/refs/tags/v1.0.1.1.tar.gz" \
+#    --install-option "--force-bundled-libcapnp" .
 
 
 RUN git clone https://github.com/shersonb/python-ebml.git && \
