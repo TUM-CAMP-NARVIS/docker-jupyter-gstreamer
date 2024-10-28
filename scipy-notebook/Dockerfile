@@ -194,6 +194,8 @@ RUN apt-get update --yes && \
     nasm \
     mono-devel \
     libomp-dev \
+    libusb-1.0-0-dev \
+    libglu1-mesa-dev \
     libacl1-dev && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
